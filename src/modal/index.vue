@@ -144,6 +144,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
+  height: 100vh;
   display: table;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -160,7 +161,7 @@ export default {
 }
 
 .v-modal__container {
-  width: 70%;
+  width: fit-content;
   max-width: 500px;
   margin: 0px auto;
   padding: 20px;
