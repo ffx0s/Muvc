@@ -6,7 +6,6 @@ import Modal from 'lvan/modal/plugin'
 const request = axios.create({
   // withCredentials: true,
   // timeout: 10000, // request timeout
-  baseURL: 'https://api.webfed.cn/mock/11' // api的base_url
 })
 
 // request interceptor

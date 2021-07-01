@@ -38,14 +38,21 @@ export default {
   created() {
     this.query = {
       page: 0,
-      size: 15
+      per_page: 15
     }
   },
   methods: {
     fetchData(query) {
       this.failed = false
       return getProducts(query)
-        .then(({ records, pages, total }) => {
+        .then(records => {
+          records = records.map(item => ({
+            id: item.id,
+            title: item.user.name,
+            description: item.alt_description,
+            image: item.urls.thumb
+          }))
+          const pages = 3
           if (this.loading) {
             // 加载更多
             this.transitionName = 'item'
@@ -58,7 +65,7 @@ export default {
             this.query.page = 1
           }
           // 没有数据
-          this.empty = !total
+          // this.empty = !total
           // 是否为最后一页
           this.finished = query.page >= pages
         })

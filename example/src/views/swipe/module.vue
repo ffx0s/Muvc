@@ -3,20 +3,13 @@
     <h4 class="text-center">Swpie 横向</h4>
     <Swipe v-model="index" class="swipe" preload :vertical="vertical">
       <SwipeItem v-for="(img, index) in imgs" :key="index" lazy>
-        <img class="img" :src="img" />
+        <img class="img no-touch" :src="img" />
       </SwipeItem>
     </Swipe>
     <h4 class="text-center">Swpie 垂直</h4>
-    <Swipe
-      v-model="index2"
-      class="swipe"
-      @down="down"
-      vertical
-      optimization
-      preload
-    >
+    <Swipe v-model="index2" class="swipe" vertical optimization preload>
       <SwipeItem v-for="img in imgs" :key="img" lazy>
-        <img class="img" :src="img" />
+        <img class="img no-touch" :src="img" />
       </SwipeItem>
     </Swipe>
     <div style="height: 500px"></div>
@@ -43,11 +36,6 @@ export default {
         'https://static.webfed.cn/o_1d9u7gc8cnpnke014pnu1g25ch.jpg?imageView2/0/w/700',
         'https://static.webfed.cn/o_1d9u7gc8ceef1kip1f6kg0jb67g.jpg?imageView2/0/w/700'
       ]
-    }
-  },
-  methods: {
-    down(event) {
-      event.cancelable && event.preventDefault()
     }
   }
 }

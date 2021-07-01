@@ -14,7 +14,7 @@
 <script>
 import Card from 'lvan/card/c3'
 import PullRefresh from 'lvan/pullRefresh'
-import { getComments } from '../../api/product'
+import { getProducts } from '../../api/product'
 
 export default {
   components: {
@@ -31,10 +31,15 @@ export default {
   },
   methods: {
     fetchData() {
-      const productId = 110
-      return getComments(productId)
+      return getProducts()
         .then(data => {
-          this.items = data.records
+          this.items = data.map(item => ({
+            id: item.id,
+            date: item.created_at.split('T')[0],
+            name: item.user.name,
+            content: item.alt_description,
+            image: item.urls.thumb
+          }))
         })
         .catch(this.failure)
     },

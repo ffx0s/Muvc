@@ -29,6 +29,7 @@ import Gruop from 'lvan/cell/group'
 import Cell from 'lvan/cell'
 import Drawer from 'lvan/drawer'
 import { disablePagezoom } from 'lvan/utils/shared'
+import touchEmulator from 'lvan/utils/touchEmulator'
 
 export default {
   name: 'App',
@@ -61,6 +62,7 @@ export default {
   },
   mounted() {
     disablePagezoom()
+    touchEmulator()
   }
 }
 </script>
@@ -172,5 +174,11 @@ body {
 
 .item-leave-active {
   position: absolute;
+}
+
+.no-touch {
+  pointer-events: none;
+  touch-action: none;
+  user-select: none;
 }
 </style>

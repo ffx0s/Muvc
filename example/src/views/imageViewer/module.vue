@@ -8,12 +8,12 @@
     >
       <h4>#{{ i + 1 }} {{ item.title }}</h4>
       <ul>
-        <li v-for="(img, index) in item.images" :key="index">
-          <img
-            @click="showViewer(i, index)"
-            :src="img.thumbnail"
-            :alt="img.alt"
-          />
+        <li
+          @click="showViewer(i, index)"
+          v-for="(img, index) in item.images"
+          :key="index"
+        >
+          <img :src="img.thumbnail" :alt="img.alt" class="no-touch" />
         </li>
       </ul>
     </div>

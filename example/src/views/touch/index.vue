@@ -15,6 +15,7 @@
       <img
         src="https://static.webfed.cn/o_1d9u7gc8c8ip1u35n111i46ehce.jpg"
         alt="dragImage"
+        class="no-touch"
       />
     </div>
   </div>
