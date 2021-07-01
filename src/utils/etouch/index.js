@@ -1,11 +1,5 @@
 import EventEmitter from '../eventEmitter'
-import {
-  addListener,
-  removeListener,
-  rAFThrottle,
-  makeArray,
-  isTouchDevice
-} from '../shared'
+import { addListener, removeListener, rAFThrottle, makeArray } from '../shared'
 import {
   getPoints,
   getTouchCenter,
@@ -45,17 +39,11 @@ export default class ETouch extends EventEmitter {
         this.down(event)
         break
       case 'touchmove':
-      case 'mousemove':
         this.move(event)
         break
       case 'touchend':
         this.up(event)
         break
-      case 'mousedown':
-        this._mouseEvents('down', addListener, event)
-        break
-      case 'mouseup':
-        this._mouseEvents('up', removeListener, event)
     }
   }
 
@@ -141,21 +129,6 @@ export default class ETouch extends EventEmitter {
     action(el, 'touchstart', this, touchstartEventOptions)
     action(el, 'touchmove', this, touchmoveEventOptions)
     action(el, 'touchend', this, touchendEventOptions)
-
-    if (!isTouchDevice()) {
-      action(el, 'mousedown', this, touchstartEventOptions)
-    }
-  }
-
-  _mouseEvents(name, action, event) {
-    const { touchmoveEventOptions, touchendEventOptions } = this.options
-
-    ETouch.preventDefault(event)
-
-    this[name](event)
-
-    action(document, 'mousemove', this, touchmoveEventOptions)
-    action(document, 'mouseup', this, touchendEventOptions)
   }
 
   _mockDoubleTap(event) {

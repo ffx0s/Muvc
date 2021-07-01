@@ -38,6 +38,8 @@ export default class EventEmitter {
         }
       }
     })
+
+    return this
   }
 
   off(eventName, fn) {
@@ -47,7 +49,7 @@ export default class EventEmitter {
       // 没有回调函数则移除所有该事件下的函数
       if (!fn) {
         this.listeners[eventName] = []
-        return
+        return this
       }
 
       // 有事件名和函数
@@ -56,7 +58,7 @@ export default class EventEmitter {
       for (let i = 0; i < length; i++) {
         if (listeners[i] && listeners[i].fn === fn) {
           listeners.splice(i, 1)
-          return
+          return this
         }
       }
     }
@@ -65,5 +67,7 @@ export default class EventEmitter {
     if (!eventName) {
       this.listeners = {}
     }
+
+    return this
   }
 }
