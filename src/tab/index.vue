@@ -28,7 +28,7 @@
     >
       <SwipeItem
         class="v-tab__item"
-        v-for="(tab, i) in $slots.default"
+        v-for="(tab, i) in $slots.default.filter(slot => slot.tag)"
         :key="i"
         ref="swipeItem"
       >
@@ -94,7 +94,9 @@ export default {
     }
   },
   mounted() {
-    this.tabs = this.$refs.swipeItem.map(tab => tab.$children[0])
+    this.tabs = this.$refs.swipeItem
+      .map(tab => tab.$children[0])
+      .filter(tab => tab)
     this.tabs[this.value].load()
 
     let Handler
@@ -169,6 +171,10 @@ export default {
   & > .v-swipe__content {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    & > div {
+      width: inherit;
+      height: inherit;
+    }
   }
 }
 </style>
