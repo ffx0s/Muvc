@@ -12,12 +12,17 @@ export default class ETouch extends EventEmitter {
   constructor(options) {
     super()
 
-    this.data = {}
+    this.data = {
+      position: { x: 0, y: 0, scale: 1, rotation: 0 }
+    }
     this.options = Object.assign({}, ETouch.defaultOptions, options)
+    this.startPosition = { x: 0, y: 0, scale: 1, rotation: 0 }
 
     if (this.options.el) {
       this.bind()
     }
+
+    return this
   }
 
   setOptions(options) {
@@ -27,10 +32,12 @@ export default class ETouch extends EventEmitter {
 
   bind() {
     this._touchEvents(addListener)
+    return this
   }
 
   unbind() {
     this._touchEvents(removeListener)
+    return this
   }
 
   handleEvent(event) {
@@ -201,7 +208,7 @@ export default class ETouch extends EventEmitter {
     this.isSwipe = false
     this.timeStamp = event.timeStamp
 
-    this.data = {
+    Object.assign(this.data, {
       clientX,
       clientY,
       vx,
@@ -209,7 +216,7 @@ export default class ETouch extends EventEmitter {
       deltaX: 0,
       deltaY: 0,
       time: 0
-    }
+    })
 
     this._emit(eventTypes.panstart, event)
   }
@@ -251,7 +258,7 @@ export default class ETouch extends EventEmitter {
       this._setDirection(vx, vy)
     }
 
-    this.data = {
+    Object.assign(this.data, {
       vx,
       vy,
       deltaX,
@@ -260,7 +267,7 @@ export default class ETouch extends EventEmitter {
       clientY,
       time,
       position
-    }
+    })
 
     if (lockDirection) {
       this._emit(this.action, event)
@@ -296,7 +303,7 @@ export default class ETouch extends EventEmitter {
 
     this.startPosition = { x, y, scale }
 
-    this.data = {
+    Object.assign(this.data, {
       zoom,
       center,
       scale: 1,
@@ -305,7 +312,7 @@ export default class ETouch extends EventEmitter {
       deltaX: 0,
       deltaY: 0,
       position: { x, y, scale }
-    }
+    })
 
     this._emit(eventTypes.pinchstart, event)
   }
@@ -339,10 +346,11 @@ export default class ETouch extends EventEmitter {
     let position = {}
 
     if (origin) {
-      const point = typeof origin === 'object' ? origin : center
-
+      const point =
+        typeof origin === 'function'
+          ? origin(event, data, center, zoom)
+          : center
       const result = originZoom(data.position, point, newScale)
-
       position.x = result.x
       position.y = result.y
       position.scale = newScale
@@ -476,10 +484,10 @@ ETouch.defaultOptions = {
   // 快速滑动的阈值
   threshold: 3,
   /**
-   * 缩放原点设置，可选值：false|true|{x, y}
+   * 缩放原点设置，可选值：false|true|function
    * false - 不设置原点缩放
    * true - 以两指中心点为原点进行缩放
-   * {x: Number, y: Number} - 以 x,y 为原点进行缩放
+   * function - 函数执行返回原点对象：{x: Number, y: Number}，以 x,y 为原点进行缩放
    */
   origin: false,
   // 缩放的同时是否可以移动
