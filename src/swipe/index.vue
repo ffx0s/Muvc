@@ -1,5 +1,8 @@
 <template>
-  <div class="v-swipe" :class="{ 'v-swipe--vertical': vertical }">
+  <div
+    class="v-swipe"
+    :class="{ 'v-swipe--vertical': vertical, 'v-swipe--none': eventNone }"
+  >
     <div
       class="v-swipe__items"
       @webkitTransitionEnd.self="transitionend"
@@ -113,7 +116,8 @@ export default {
   data() {
     return {
       items: [],
-      currentIndex: this.value
+      currentIndex: this.value,
+      eventNone: false
     }
   },
   watch: {
@@ -182,6 +186,7 @@ export default {
       const value = vector * friction
 
       this.translate += value
+      this.eventNone = true
 
       this.showAdjacentItem()
       this.rAFUpdateElement()
@@ -191,6 +196,7 @@ export default {
     panend() {
       const action = this.shouldSlide()
 
+      this.eventNone = false
       this.$emit('panend', action)
 
       if (action.restore) return this.slide(this.currentIndex)
@@ -251,7 +257,6 @@ export default {
       // eslint-disable-next-line prettier/prettier
       style.transitionDuration =
       style.webkitTransitionDuration = `${this.duration}ms`
-
       style.transform = style.webkitTransform = this.vertical
         ? `translate3d(0, ${translate}px, 0)`
         : `translate3d(${translate}px, 0, 0)`
@@ -401,6 +406,10 @@ export default {
   z-index: 2;
   width: 100%;
   overflow: hidden;
+}
+
+.v-swipe--none {
+  pointer-events: none;
 }
 
 .v-swipe__items {
