@@ -11,6 +11,9 @@ module.exports = {
     plugins: [new InlineManifestWebpackPlugin('manifest')]
   },
   chainWebpack: config => {
+    if (process.env.NODE_ENV === 'development') {
+      config.output.filename('[name].[hash].js').end()
+    }
     config.resolve.alias.set(
       'vue$',
       resolve('./node_modules/vue/dist/vue.runtime.esm.js')
